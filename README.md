@@ -29,39 +29,39 @@ To execute the Terraform script:
 
 1. **Prepare .tf file**
 
-   Create a `main.tf` file in a new folder. Copy and paste the following configuration and modify as required:
+Create a `main.tf` file in a new folder. Copy and paste the following configuration and modify as required:
 
-   ```
-   module "acr-config" {
+```hcl
+module "acr-config" {
     source            = "uptycslabs/acr-config/azurerm"
 
     uptycs_app_client_id = "Copy/Paste From the Uptycs UI"
     root_management_group_id = "The id of the root management group"
-  }
+} 
 
-   output "tenant_id" {
-       value = module.azure-org-config.tenantId
-   }
-   ```
+output "tenant_id" {
+    value = module.azure-org-config.tenantId
+}
+```
 
 2. **Init, Plan and Apply**
 
-   **Inputs**
+**Inputs**
 
-   | Name                         | Description                        | Type     | Default           |
-   | ------------------------ | -------------------------------------- | -------- | ----------------- |
-   | root_management_group_id | The ID of the root management group    | `string` | Required          |
-   | uptycs_app_client_id   | The Client ID of Uptycs multi-tenant app | `string` | Required          |
+| Name                         | Description                        | Type     | Default           |
+| ------------------------ | -------------------------------------- | -------- | ----------------- |
+| root_management_group_id | The ID of the root management group    | `string` | Required          |
+| uptycs_app_client_id   | The Client ID of Uptycs multi-tenant app | `string` | Required          |
 
-   ### Outputs
+### Outputs
 
-   | Name     | Description |
-   | -------- | ----------- |
-   | tenantId | Tenant ID   |
+| Name     | Description |
+| -------- | ----------- |
+| tenantId | Tenant ID   |
 
-   ```
-   $ terraform init --upgrade
-   $ terraform plan  # Please verify before applying
-   $ terraform apply
-   # Wait until successfully completed
-   ```
+```
+$ terraform init --upgrade
+$ terraform plan  # Please verify before applying
+$ terraform apply
+# Wait until successfully completed
+```
