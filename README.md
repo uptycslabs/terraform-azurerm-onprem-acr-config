@@ -7,7 +7,12 @@ This terraform module will create the following resources:
 - Service principal
 
 In addition to these resources, the newly created service principal will have the following permissions granted to it:
+- Microsoft.ContainerRegistry/registries/read
 - Microsoft.ContainerRegistry/registries/pull/read
+
+And will be granted the following roles:
+- Reader
+- AcrPull
 
 ## Prerequisites
 
