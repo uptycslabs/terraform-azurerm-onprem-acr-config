@@ -36,11 +36,10 @@ module "acr-config" {
     source            = "uptycslabs/acr-config/azurerm"
 
     uptycs_app_client_id = "Copy/Paste From the Uptycs UI"
-    root_management_group_id = "The id of the root management group"
 } 
 
 output "tenant_id" {
-    value = module.azure-org-config.tenantId
+    value = module.acr-config.tenantId
 }
 ```
 
@@ -48,9 +47,8 @@ output "tenant_id" {
 
 **Inputs**
 
-| Name                         | Description                        | Type     | Default           |
-| ------------------------ | -------------------------------------- | -------- | ----------------- |
-| root_management_group_id | The ID of the root management group    | `string` | Required          |
+| Name                   | Description                              | Type     | Default           |
+| ---------------------- | ---------------------------------------- | -------- | ----------------- |
 | uptycs_app_client_id   | The Client ID of Uptycs multi-tenant app | `string` | Required          |
 
 ### Outputs
