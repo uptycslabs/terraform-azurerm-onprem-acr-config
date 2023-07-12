@@ -14,24 +14,34 @@ resource "azuread_service_principal" "service_principal" {
   use_existing   = true
 }
 
-# Create Graph API related permissions to the service principal
-resource "azuread_app_role_assignment" "uptycs_registry_reader_role" {
-  app_role_id         = azuread_service_principal.msgraph.app_role_ids["Application.Read.All"]
-  principal_object_id = azuread_service_principal.service_principal.object_id
-  resource_object_id  = azuread_service_principal.msgraph.object_id
-}
-
 resource "azurerm_role_definition" "Define_Uptycs_Registry_Reader_Role" {
   name        = "UptycsRegistryReader"
-  scope       = data.azurerm_management_group.parent_management_group.id
+  scope       = data.azurerm_subscription.current.id
   description = "Read permissions for accessing ACR"
 
   permissions {
-    actions = ["Microsoft.ContainerRegistry/registries/pull/read"]
+    actions = [
+      "Microsoft.ContainerRegistry/registries/read",
+      "Microsoft.ContainerRegistry/registries/pull/read"
+    ]
     not_actions = []
   }
 
   assignable_scopes = [
-    data.azurerm_management_group.parent_management_group.id,
+    data.azurerm_subscription.current.id,
   ]
+}
+
+# Give the service principal a Reader role in the Subscription
+resource "azurerm_role_assignment" "attach_reader_role" {
+  principal_id         = azuread_service_principal.service_principal.id
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "Reader"
+}
+
+# Give the service principal an AcrPull role in the Subscription
+resource "azurerm_role_assignment" "attach_acrpull_role" {
+  principal_id         = azuread_service_principal.service_principal.id
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "AcrPull"
 }
