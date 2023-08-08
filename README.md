@@ -1,9 +1,10 @@
-# terraform-azurem-acr-config
+# terraform-azurerm-onprem-acr-config
 
-This module creates the necessary Azure resources to grant uptycs access to Azure Container Registries for registry monitoring. Access is setup with federated service principals.
+This module creates the necessary Azure resources to grant uptycs access to Azure Container Registries for registry monitoring. Access is setup with a custom Application and service principals.
 
 This terraform module will create the following resources:
 
+- Application
 - Service principal
 
 In addition to these resources, the newly created service principal will have the following permissions granted to it:
@@ -25,7 +26,7 @@ Ensure you have the following privileges before you execute the Terraform Script
 To authenticate Azure tenant, use the following command:
 
 ```
-$ az login --tenant "tenant id"
+$ az login
 ```
 
 ## Terraform Script
@@ -38,14 +39,24 @@ Create a `main.tf` file in a new folder. Copy and paste the following configurat
 
 ```hcl
 module "acr-config" {
-    source            = "uptycslabs/acr-config/azurerm"
+  source            = "uptycslabs/onprem-acr-config/azurerm"
 
-    uptycs_app_client_id = "Copy/Paste From the Uptycs UI"
-} 
+  resource_name = "AnExampleName"
+}
 
 output "tenant_id" {
-    value = module.acr-config.tenant_id
+  value = module.acr-config.tenant_id
 }
+
+output "client_id" {
+  value = module.acr-config.client_id
+}
+
+output "client_secret" {
+  value     = module.acr-config.client_secret
+  sensitive = true
+}
+
 ```
 
 2. **Init, Plan and Apply**
@@ -59,13 +70,16 @@ output "tenant_id" {
 
 ### Outputs
 
-| Name     | Description |
-| -------- | ----------- |
-| tenant_id | Tenant ID   |
+| Name          | Description   |
+| ------------- | ------------- |
+| tenant_id     | Tenant ID     |
+| client_id     | Client ID     |
+| client_secret | Client Secret |
 
 ```
 $ terraform init --upgrade
 $ terraform plan  # Please verify before applying
 $ terraform apply
 # Wait until successfully completed
+$ terraform output -raw 'client_secret'
 ```

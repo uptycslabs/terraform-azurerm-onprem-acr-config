@@ -2,10 +2,19 @@
  * Copyright (c) 2023 Uptycs, Inc. All rights reserved
  */
 
+resource "azuread_application" "UptycsRegistryScanner" {
+  display_name = "UptycsRegistryScanner-${var.resource_name}"
+  owners       = [data.azurerm_client_config.current.object_id]
+}
+
+resource "azuread_application_password" "UptycsRegistryScannerSecret" {
+  application_object_id = azuread_application.UptycsRegistryScanner.id
+  display_name = "UptycsRegistryScanner-${var.resource_name}"
+}
 
 # Create a service principal for the Uptycs App
 resource "azuread_service_principal" "service_principal" {
-  application_id = var.uptycs_app_client_id
+  application_id = azuread_application.UptycsRegistryScanner.application_id
   use_existing   = true
 }
 
