@@ -63,9 +63,8 @@ output "client_secret" {
 
 **Inputs**
 
-| Name                 | Description                                              | Type     | Default     |
-| ---------------------| -------------------------------------------------------- | -------- | ----------- |
-| uptycs_app_client_id | The Client ID of Uptycs multi-tenant app                 | `string` |             |
+| Name                 | Description                                              | Type     | Default              |
+| ---------------------| -------------------------------------------------------- | -------- | -------------------- |
 | resource_name        | A unique prefix for the resources created by this module | `string` | "uptycs_custom_role" |     
 
 ### Outputs
